@@ -1,0 +1,62 @@
+/*
+#banner {
+    width: 100%;
+}
+h1 {
+    color: #555;
+    font-family: Arial;
+}
+
+nav ul {
+    background-color: #555;
+    list-style-type: none;
+    margin: 0;
+    overflow: hidden;
+    padding: 0;
+}
+
+nav li {
+    float: left;
+}
+
+
+nav a {
+    color: #fff;
+    display:block;
+    font-family: arial;
+    padding: 10px 10px;
+    text-decoration: none;
+}
+
+nav a:hover{
+    background-color: #f00;
+}
+*/
+
+.masthead {
+    background-size: cover;
+    min-height: 60vh;
+    position: relative;
+    color: white;
+    text-shadow: 2px 2px 2px rgba(0,0,0,.5);
+}
+
+h1 {
+    font-size: 4rem;
+}
+
+.color-overlay {
+    position: absolute;
+    background-color: rgba(0,0,0,0.2);
+    height: 100%;
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .masthead {
+        min-height: 30vh;
+    }
+    h1 {
+        font-size: calc(1.525rem + 3.3vw);
+    }
+}
