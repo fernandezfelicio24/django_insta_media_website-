@@ -6,7 +6,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Index</title>
+    <title>{{ insta_media }}</title>
     {% include "snippets/styles.html"%}
 
     {% block app_css %}
@@ -15,6 +15,9 @@
 
 </head>
 <body>
+    {% block content %}
+
+    {% endblock content%}
 
 
      {% include "snippets/scripts.html"%}
