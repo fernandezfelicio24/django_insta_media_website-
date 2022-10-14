@@ -12,6 +12,13 @@ class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     slug = models.SlugField(blank=True, editable=False)
 
+class Comment(models.Model):
+    comment = models.TextField()
+    created_on = models.DateTimeField(default=timezone.now)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey('Post', on_delete=models.CASCADE)
+    slug = models.SlugField(blank=True, editable=False)
+    
     def save(self, *args, **kwargs):
         #self.slug = slugify(self.body)
         super(Post, self).save()

@@ -23,10 +23,21 @@ class PostListView(View):
             new_post = form.save(commit=False)
             new_post.author = request.user
             new_post.save()
-            
+
         context = {
             'post_list': posts,
             'form': form,
         }
 
         return render(request, 'social/post_list.html', context)
+
+class PostDetailView(View):
+
+    def get(self, request, slugInput, *args, **kwargs):
+        post = Post.objects.get(slug=slugInput)
+
+        context = {
+            'post' : post
+        }
+
+        return render(request, 'social/post_detail.html', context)
