@@ -9,4 +9,3 @@ urlpatterns = [
     path('post/<slug:slug>/comment/delete/<int:pk>/ ', CommentDeleteView.as_view(), name='comment-delete'),
 ]
 
-#humans-are-idiot
