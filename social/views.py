@@ -115,3 +115,16 @@ class ProfileView(View):
         }
 
         return render(rquest, 'social/profile.html', context)
+
+class ProfileEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView  ):
+    model = UserProfile
+    fields = ['name', 'bio', 'birth_day', 'location', 'picture']
+    template_name = 'social/profile_edit.html'
+    print("masuk pak eko")
+    def get_success_url(self):
+        pk = self.kwargs['pk']
+        return reverse_lazy('profile', kwargs={'pk': pk})
+
+    def test_func(self):
+        profile = self.get_object()
+        return self.request.user == profile.user

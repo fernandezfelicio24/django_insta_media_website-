@@ -99,11 +99,19 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'db_socialmedia',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': '127.0.0.1',
+        'USER': 'vtl_it_felicio',
+        'PASSWORD': 'Timor@123',
+        'HOST': '10.226.48.12',
         'PORT': '3306',
-    }
+    },
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'db_socialmedia',
+    #     'USER': 'root',
+    #     'PASSWORD': '',
+    #     'HOST': '127.0.0.1',
+    #     'PORT': '3306',
+    # }
 }
 
 
@@ -143,7 +151,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
-MEDIA_ROOT = Path.joinpath(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 

@@ -3,6 +3,7 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.db.models.signals import pre_save, post_save
+from django.dispatch import receiver
 from .utils import slugify_instance_body
 
 # Create your models here.
@@ -28,9 +29,10 @@ class UserProfile(models.Model):
     birth_day = models.DateField(null=True, blank=True)
     location = models.CharField(max_length=100, blank=True, null=True)
     #need to install Pillow before use ImageField
-    picture = models.ImageField(upload_to='uploads/profile_picture', default='uploads/profile_pictures/default.png', blank=True)
+    picture = models.ImageField(upload_to='uploads/profile_picture', default='uploads/profile_picture/default.png', blank=True)
 
-
+    def __str__(self):
+        return "{} . {} ".format(self.user_id, self.name)
     # def save(self, *args, **kwargs):
     #     #self.slug = slugify(self.body)
     #     super(Post, self).save()
@@ -55,3 +57,13 @@ def post_post_save(sender, instance, created,*args, **kwargs):
         slugify_instance_body(instance, save=True)
 
 post_save.connect(post_post_save, sender=Post)
+
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        UserProfile.objects.create(user=instance)
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()
