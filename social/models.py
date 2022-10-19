@@ -30,6 +30,7 @@ class UserProfile(models.Model):
     location = models.CharField(max_length=100, blank=True, null=True)
     #need to install Pillow before use ImageField
     picture = models.ImageField(upload_to='uploads/profile_picture', default='uploads/profile_picture/default.png', blank=True)
+    followers = models.ManyToManyField(User, blank=True, related_name='followers')
 
     def __str__(self):
         return "{} . {} ".format(self.user_id, self.name)
