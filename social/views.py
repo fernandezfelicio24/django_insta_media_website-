@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.views import View
@@ -71,7 +71,7 @@ class PostEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
     fields = ['body']
     template_name = 'social/post_edit.html'
-    print("hello masuk")
+
     def get_success_url(self):
 
         slug = self.kwargs['slug']
@@ -103,24 +103,39 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         return self.request.user == post.author
 
 class ProfileView(View):
-    def get(self, rquest, pk, *args, **kwargs):
+    def get(self, request, pk, *args, **kwargs):
         profile = UserProfile.objects.get(pk=pk)
         user = profile.user
         posts = Post.objects.filter(author=user).order_by('-created_on')
 
+        followers = profile.followers.all()
+
+        if len(followers) == 0 :
+            is_following = False
+
+        for follower in followers:
+            if follower == request.user:
+                is_following = True
+                break
+            else:
+                is_following = False
+
+        number_of_followers = len(followers)
         context = {
             'user' : user,
             'profile' : profile,
-            'posts' : posts
+            'posts' : posts,
+            'is_following' : is_following,
+            'number_of_followers' : number_of_followers,
         }
 
-        return render(rquest, 'social/profile.html', context)
+        return render(request, 'social/profile.html', context)
 
 class ProfileEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView  ):
     model = UserProfile
     fields = ['name', 'bio', 'birth_day', 'location', 'picture']
     template_name = 'social/profile_edit.html'
-    print("masuk pak eko")
+
     def get_success_url(self):
         pk = self.kwargs['pk']
         return reverse_lazy('profile', kwargs={'pk': pk})
@@ -128,3 +143,17 @@ class ProfileEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView  ):
     def test_func(self):
         profile = self.get_object()
         return self.request.user == profile.user
+
+class AddFollower(LoginRequiredMixin, View):
+    def post(self, request, pk, *args, **kwargs):
+        profile = UserProfile.objects.get(pk=pk)
+        profile.followers.add(request.user)
+
+        return redirect('profile', pk = profile.pk)
+
+class RemoveFollower(LoginRequiredMixin, View):
+    def post(self, request, pk, *args, **kwargs):
+        profile = UserProfile.objects.get(pk=pk)
+        profile.followers.remove(request.user)
+
+        return redirect('profile', pk=profile.pk)
