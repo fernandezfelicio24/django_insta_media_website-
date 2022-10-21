@@ -12,7 +12,8 @@ class Post(models.Model):
     created_on = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     slug = models.SlugField(blank=True, editable=False)
-
+    likes = models.ManyToManyField(User, blank=True, related_name='likes')
+    dislikes = models.ManyToManyField(User, blank=True, related_name='dislikes')
     def __str__(self):
         return "{} . {} ".format(self.id, self.author)
 
@@ -68,3 +69,5 @@ def create_user_profile(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
+
+
