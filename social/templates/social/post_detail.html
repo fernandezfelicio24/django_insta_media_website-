@@ -86,6 +86,23 @@
                         <p>
                             {{ comment.comment }}
                         </p>
+                        <div class="d-flex flex-row">
+                                <form method="POST" action="{% url 'comment-like' comment.pk %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="next" value="{{ request.path }}">
+                                    <button class="remove-default-btn" type="submit">
+                                        <i class="fa fa-thumbs-up"> <span>{{comment.likes.all.count   }}</span></i>
+                                    </button>
+                                </form>
+
+                                <form method="POST" action="{% url 'comment-dislike' comment.pk %}">
+                                    {% csrf_token %}
+                                     <input type="hidden" name="next" value="{{ request.path }}">
+                                    <button class="remove-default-btn" type="submit">
+                                        <i class="fa fa-thumbs-down"><span>{{ comment.dislikes.all.count }}</span></i>
+                                    </button>
+                                </form>
+                            </div>
                   </div>
             </div>
             {% endfor %}

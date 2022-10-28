@@ -1,3 +1,9 @@
+
+.body-animation {
+    #background: deeppink;
+    background: palegreen;
+}
+
 .remove-default-btn {
     background-color: transparent;
     border: none;
