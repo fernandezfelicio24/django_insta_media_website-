@@ -26,6 +26,14 @@ class Comment(models.Model):
     dislikes = models.ManyToManyField(User, blank=True, related_name='comment_dislikes')
     parent = models.ForeignKey('self', on_delete=models.CASCADE, blank=True, null=True, related_name='+')
 
+    @property
+    def children(self):
+        return Comment.objects.filter(parent=self).order_by('-created_on').all()
+    @property
+    def is_parent(self):
+        if self.parent is None:
+            return True
+        return False
 class UserProfile(models.Model):
     user = models.OneToOneField(User, primary_key=True, verbose_name='user', related_name='profile', on_delete=models.CASCADE)
     name = models.CharField(max_length=30, blank=True, null=True)
