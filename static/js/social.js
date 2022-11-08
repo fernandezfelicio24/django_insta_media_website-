@@ -6,5 +6,5 @@ function commentReplyToggle(parent_id){
 	} else {
 		row.classList.add('d-none');
 	}
-    
+
 }

@@ -2,7 +2,7 @@ from django.urls import path
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from .views import PostListView, PostDetailView, PostEditView, PostDeleteView, CommentDeleteView,\
                    ProfileView, ProfileEditView, AddFollower, RemoveFollower, AddLike, AddDisLike,\
-                    UserSearch, ListFollowers, AddCommentLike, AddCommentDisLike
+                    UserSearch, ListFollowers, AddCommentLike, AddCommentDisLike, CommentReplyView
 
 urlpatterns = [
 
@@ -16,6 +16,8 @@ urlpatterns = [
 
     path('post/<int:pk>/like', AddLike.as_view(), name='like'),
     path('post/<int:pk>/dislike', AddDisLike.as_view(), name='dislike'),
+
+    path('post/<slug:slug>/comment/<int:pk>/reply', CommentReplyView.as_view(), name='comment-reply'),
 
     path('profile/<int:pk>/', ProfileView.as_view(), name='profile'),
     path('profile-edit/<int:pk>/', ProfileEditView.as_view(), name='profile-edit'),

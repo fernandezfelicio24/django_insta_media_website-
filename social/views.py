@@ -72,6 +72,21 @@ class PostDetailView(LoginRequiredMixin, View):
         }
         return render(request, 'social/post_detail.html', context)
 
+class CommentReplyView(LoginRequiredMixin, View):
+    def post(self, request,slug, pk, *args, **kwargs):
+        post = Post.objects.get(slug=slug)
+        parent_comment = Comment.objects.get(pk=pk)
+        form = CommentForm(request.POST)
+
+        if form.is_valid():
+            new_comment = form.save(commit=False)
+            new_comment.author = request.user
+            new_comment.post = post
+            new_comment.parent = parent_comment
+            new_comment.save()
+
+        return redirect('post-detail', slug=slug)
+
 class PostEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
     fields = ['body']
